@@ -1,0 +1,19 @@
+<configuration scan="true" scanPerod="60 seconds">
+    <property name="LOG_PATTERN" value="%clr(%d{HH:mm:ss}){magenta} %clr([%thread]){blue} %clr(%-5level){yellow} %clr(%logger{36} -%kvp-){cyan}%n %clr(%msg){green}%n"/>
+    <property name="LOGS_PATH" value="./logs" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <!--콘솔에 로그 처리-->
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                ${LOG_PATTERN}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
