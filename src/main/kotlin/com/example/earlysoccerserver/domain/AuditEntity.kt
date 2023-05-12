@@ -13,10 +13,12 @@ abstract class AuditDateTimeEntity: AuditIDEntity() {
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     var createdAt: LocalDateTime = LocalDateTime.now()
+        private set
 
     @LastModifiedDate
     @Column(name = "updated_at")
     lateinit var updatedAt: LocalDateTime
+        private set
 }
 
 @MappedSuperclass
@@ -25,4 +27,5 @@ abstract class AuditIDEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+        private set
 }
