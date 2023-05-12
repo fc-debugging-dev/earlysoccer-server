@@ -9,24 +9,9 @@ import jakarta.validation.constraints.NotBlank
 @Entity
 @Table(name = "member")
 class Member(
-    email: String,
-    password: String,
-    name: String,
-    nickname: String,
-    profileImg: String
-): AuditDateTimeEntity() {
-    @Column(name = "email") @NotBlank
-    val email: String = email
-
-    @Column(name = "password") @NotBlank
-    val password: String = password
-
-    @Column(name = "name") @NotBlank
-    val name: String = name
-
-    @Column(name = "nickname") @NotBlank
-    val nickname: String = nickname
-
-    @Column(name = "profile_img") @NotBlank
-    val profileImg: String = profileImg
-}
+    @Column(name = "email", nullable = false) private val email: String,
+    @Column(name = "password", nullable = false) private val password: String,
+    @Column(name = "name", nullable = false) private val name: String,
+    @Column(name = "nickname", nullable = false) private val nickname: String,
+    @Column(name = "profile_img") private val profileImg: String,
+): AuditDateTimeEntity() { }
