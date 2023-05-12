@@ -11,14 +11,12 @@ import java.time.LocalDateTime
 abstract class AuditDateTimeEntity: AuditIDEntity() {
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
-    var createdAt: LocalDateTime = LocalDateTime.now()
-        private set
+    @Column(nullable = false, updatable = false)
+    protected var createdAt: LocalDateTime = LocalDateTime.now()
 
     @LastModifiedDate
-    @Column(name = "updated_at")
-    lateinit var updatedAt: LocalDateTime
-        private set
+    @Column()
+    protected lateinit var updatedAt: LocalDateTime
 }
 
 @MappedSuperclass
@@ -26,6 +24,5 @@ abstract class AuditDateTimeEntity: AuditIDEntity() {
 abstract class AuditIDEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
-        private set
+    protected var id: Long? = null
 }
