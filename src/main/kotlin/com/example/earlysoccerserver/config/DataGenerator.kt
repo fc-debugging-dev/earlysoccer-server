@@ -1,6 +1,7 @@
 package com.example.earlysoccerserver.config
 
 import com.example.earlysoccerserver.domain.member.Member
+import com.example.earlysoccerserver.domain.member.MemberDto
 import com.example.earlysoccerserver.domain.member.MemberRepository
 import com.example.earlysoccerserver.domain.team.Role
 import com.example.earlysoccerserver.domain.team.Team

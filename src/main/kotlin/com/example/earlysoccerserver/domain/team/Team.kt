@@ -12,4 +12,10 @@ class Team(
     @OneToMany(mappedBy = "team") private val teamMembers: MutableList<TeamMember> = mutableListOf<TeamMember>()
 ): AuditDateTimeEntity() {
     fun addMember(member: TeamMember) = teamMembers.add(member)
+    fun toDto(): TeamDto =
+        TeamDto(
+            name = this.name,
+            teamImg = this.teamImg,
+            teamMembers = this.teamMembers
+        )
 }
