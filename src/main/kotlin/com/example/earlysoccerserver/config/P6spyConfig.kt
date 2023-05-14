@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct
 import org.hibernate.engine.jdbc.internal.FormatStyle
 import org.springframework.context.annotation.Configuration
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 
 @Configuration
