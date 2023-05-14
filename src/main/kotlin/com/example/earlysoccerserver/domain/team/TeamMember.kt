@@ -11,7 +11,6 @@ class TeamMember(
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Team::class) private val team: Team,
 ): AuditDateTimeEntity() {
 }
-
 enum class Role {
     OWNER,
     MANAGER,
