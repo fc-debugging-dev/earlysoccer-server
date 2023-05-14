@@ -2,7 +2,11 @@ package com.example.earlysoccerserver.domain.team
 
 import com.example.earlysoccerserver.domain.AuditDateTimeEntity
 import com.example.earlysoccerserver.domain.member.Member
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.ManyToOne
 
 @Entity
 class TeamMember(

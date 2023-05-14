@@ -2,7 +2,11 @@ package com.example.earlysoccerserver.config
 
 import com.example.earlysoccerserver.domain.member.Member
 import com.example.earlysoccerserver.domain.member.MemberRepository
-import com.example.earlysoccerserver.domain.team.*
+import com.example.earlysoccerserver.domain.team.Role
+import com.example.earlysoccerserver.domain.team.Team
+import com.example.earlysoccerserver.domain.team.TeamMember
+import com.example.earlysoccerserver.domain.team.TeamMemberRepository
+import com.example.earlysoccerserver.domain.team.TeamRepository
 import io.github.serpro69.kfaker.faker
 import jakarta.transaction.Transactional
 import org.springframework.boot.context.event.ApplicationReadyEvent

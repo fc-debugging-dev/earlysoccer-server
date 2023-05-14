@@ -4,7 +4,6 @@ import com.example.earlysoccerserver.domain.AuditDateTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
 
 @Entity
 class Team(
