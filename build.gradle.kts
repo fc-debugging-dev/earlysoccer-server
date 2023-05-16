@@ -13,7 +13,7 @@ allOpen {
 	annotation("jakarta.persistence.MappedSuperclass")
 }
 
-group = "com.example"
+group = "com.fcdebug"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -50,6 +50,12 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
+tasks.test {
+	useJUnitPlatform()
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
