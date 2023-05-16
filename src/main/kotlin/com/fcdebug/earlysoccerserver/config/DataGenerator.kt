@@ -1,12 +1,12 @@
-package com.example.earlysoccerserver.config
+package com.fcdebug.earlysoccerserver.config
 
-import com.example.earlysoccerserver.domain.member.Member
-import com.example.earlysoccerserver.domain.member.MemberRepository
-import com.example.earlysoccerserver.domain.team.Role
-import com.example.earlysoccerserver.domain.team.Team
-import com.example.earlysoccerserver.domain.team.TeamMember
-import com.example.earlysoccerserver.domain.team.TeamMemberRepository
-import com.example.earlysoccerserver.domain.team.TeamRepository
+import com.fcdebug.earlysoccerserver.domain.member.Member
+import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
+import com.fcdebug.earlysoccerserver.domain.team.Role
+import com.fcdebug.earlysoccerserver.domain.team.Team
+import com.fcdebug.earlysoccerserver.domain.team.TeamMember
+import com.fcdebug.earlysoccerserver.domain.team.TeamMemberRepository
+import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
 import io.github.serpro69.kfaker.faker
 import jakarta.transaction.Transactional
 import org.springframework.boot.context.event.ApplicationReadyEvent

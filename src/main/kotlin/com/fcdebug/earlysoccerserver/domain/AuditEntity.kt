@@ -1,4 +1,4 @@
-package com.example.earlysoccerserver.domain
+package com.fcdebug.earlysoccerserver.domain
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate

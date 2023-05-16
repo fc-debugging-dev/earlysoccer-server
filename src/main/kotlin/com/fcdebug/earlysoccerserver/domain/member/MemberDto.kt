@@ -1,6 +1,6 @@
-package com.example.earlysoccerserver.domain.member
+package com.fcdebug.earlysoccerserver.domain.member
 
-import com.example.earlysoccerserver.domain.team.TeamMember
+import com.fcdebug.earlysoccerserver.domain.team.TeamMember
 
 data class MemberDto(
     val id: Long?,
