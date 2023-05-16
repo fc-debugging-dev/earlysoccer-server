@@ -1,4 +1,4 @@
-package com.example.earlysoccerserver
+package com.fcdebug.earlysoccerserver
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration

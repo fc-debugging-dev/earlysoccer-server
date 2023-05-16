@@ -1,4 +1,4 @@
-package com.example.earlysoccerserver.domain.member
+package com.fcdebug.earlysoccerserver.domain.member
 
 import org.springframework.data.jpa.repository.JpaRepository
 

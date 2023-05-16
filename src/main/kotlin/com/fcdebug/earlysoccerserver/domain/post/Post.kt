@@ -1,7 +1,7 @@
-package com.example.earlysoccerserver.domain.post
+package com.fcdebug.earlysoccerserver.domain.post
 
-import com.example.earlysoccerserver.domain.AuditDateTimeEntity
-import com.example.earlysoccerserver.domain.member.Member
+import com.fcdebug.earlysoccerserver.domain.AuditDateTimeEntity
+import com.fcdebug.earlysoccerserver.domain.member.Member
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
