@@ -1,7 +1,7 @@
-package com.example.earlysoccerserver.domain.team
+package com.fcdebug.earlysoccerserver.domain.team
 
-import com.example.earlysoccerserver.domain.AuditDateTimeEntity
-import com.example.earlysoccerserver.domain.member.Member
+import com.fcdebug.earlysoccerserver.domain.AuditDateTimeEntity
+import com.fcdebug.earlysoccerserver.domain.member.Member
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated

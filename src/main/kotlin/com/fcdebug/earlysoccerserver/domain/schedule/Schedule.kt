@@ -1,7 +1,7 @@
-package com.example.earlysoccerserver.domain.schedule
+package com.fcdebug.earlysoccerserver.domain.schedule
 
-import com.example.earlysoccerserver.domain.AuditDateTimeEntity
-import com.example.earlysoccerserver.domain.team.Team
+import com.fcdebug.earlysoccerserver.domain.AuditDateTimeEntity
+import com.fcdebug.earlysoccerserver.domain.team.Team
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType

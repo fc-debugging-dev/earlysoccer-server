@@ -1,15 +1,14 @@
-package com.example.earlysoccerserver
+package com.fcdebug.earlysoccerserver
 
-import com.example.earlysoccerserver.domain.member.Member
-import com.example.earlysoccerserver.domain.member.MemberRepository
-import com.example.earlysoccerserver.domain.team.Notification
-import com.example.earlysoccerserver.domain.team.NotificationRepository
-import com.example.earlysoccerserver.domain.team.Team
-import com.example.earlysoccerserver.domain.team.TeamRepository
+import com.fcdebug.earlysoccerserver.domain.member.Member
+import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
+import com.fcdebug.earlysoccerserver.domain.team.Notification
+import com.fcdebug.earlysoccerserver.domain.team.NotificationRepository
+import com.fcdebug.earlysoccerserver.domain.team.Team
+import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 
