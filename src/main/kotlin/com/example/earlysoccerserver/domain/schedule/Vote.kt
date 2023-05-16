@@ -11,9 +11,9 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class Vote(
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Schedule::class) private val schedule: Schedule,
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class) private val member: Member,
-    @Enumerated(EnumType.STRING) private val status: Status
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Schedule::class) val schedule: Schedule,
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class) val member: Member,
+    @Enumerated(EnumType.STRING) val status: Status
 ): AuditDateTimeEntity() {
 }
 
