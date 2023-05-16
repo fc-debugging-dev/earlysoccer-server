@@ -8,12 +8,12 @@ import jakarta.persistence.OneToMany
 
 @Entity
 class Member(
-    @Column(nullable = false) private val email: String,
-    @Column(nullable = false) private val password: String,
-    @Column(nullable = false) private val name: String,
-    @Column(nullable = false) private val nickname: String,
-    private val profileImg: String? = null,
-    @OneToMany(mappedBy = "member") private val memberTeams: MutableList<TeamMember> = mutableListOf<TeamMember>()
+    @Column(nullable = false) val email: String,
+    @Column(nullable = false) val password: String,
+    @Column(nullable = false) val name: String,
+    @Column(nullable = false) val nickname: String,
+    val profileImg: String? = null,
+    @OneToMany(mappedBy = "member") val memberTeams: MutableList<TeamMember> = mutableListOf<TeamMember>()
 ): AuditDateTimeEntity() {
     fun addTeam(team: TeamMember) = memberTeams.add(team)
 
