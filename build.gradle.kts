@@ -8,7 +8,12 @@ plugins {
 	kotlin("plugin.jpa") version "1.7.22"
 }
 
-group = "com.example"
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+}
+
+group = "com.fcdebug"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -45,6 +50,12 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
+tasks.test {
+	useJUnitPlatform()
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+

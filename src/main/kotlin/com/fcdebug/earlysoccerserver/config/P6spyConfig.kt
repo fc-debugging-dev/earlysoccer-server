@@ -1,4 +1,4 @@
-package com.example.earlysoccerserver.config
+package com.fcdebug.earlysoccerserver.config
 
 import com.p6spy.engine.logging.Category
 import com.p6spy.engine.spy.P6SpyOptions
@@ -7,7 +7,7 @@ import jakarta.annotation.PostConstruct
 import org.hibernate.engine.jdbc.internal.FormatStyle
 import org.springframework.context.annotation.Configuration
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 
 @Configuration
