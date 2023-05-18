@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 @Entity
 class Schedule(
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Team::class) val team: Team,
+    @ManyToOne(fetch = FetchType.LAZY) val team: Team,
     @Column(nullable = false) val date: LocalDateTime,
     @Column(nullable = false) val place: String,
     @Column(nullable = false) val opponent: String,

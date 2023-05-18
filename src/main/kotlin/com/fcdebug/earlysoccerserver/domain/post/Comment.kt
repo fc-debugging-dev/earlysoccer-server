@@ -9,8 +9,8 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class Comment(
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class) val writer: Member,
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Post::class) val post: Post,
+    @ManyToOne(fetch = FetchType.LAZY) val writer: Member,
+    @ManyToOne(fetch = FetchType.LAZY) val post: Post,
     @Column(nullable = false) val content: String,
 ): AuditDateTimeEntity() {
 }

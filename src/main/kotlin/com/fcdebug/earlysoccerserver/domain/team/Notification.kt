@@ -14,11 +14,9 @@ class Notification(
 
     @Column(nullable = false) val content: String,
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class)
-    val writer: Member,
+    @ManyToOne(fetch = FetchType.LAZY) val writer: Member,
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class)
-    val team: Team,
+    @ManyToOne(fetch = FetchType.LAZY) val team: Team,
 
 ) : AuditDateTimeEntity() {
     
