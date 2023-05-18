@@ -15,4 +15,14 @@ class Schedule(
     @Column(nullable = false) val place: String,
     @Column(nullable = false) val opponent: String,
 ): AuditDateTimeEntity() {
+
+    companion object {
+        fun create(team: Team, date: LocalDateTime, place: String, opponent: String): Schedule =
+            Schedule(
+                team = team,
+                date = date,
+                place = place,
+                opponent = opponent
+            )
+    }
 }
