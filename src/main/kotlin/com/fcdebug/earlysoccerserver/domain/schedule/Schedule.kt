@@ -22,7 +22,7 @@ class Schedule(
                 team = team,
                 date = date,
                 place = place,
-                opponent = opponent
+                opponent = opponent,
             )
     }
 }

@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 @ActiveProfiles("test")
 @DataJpaTest
 class ScheduleTest @Autowired constructor(
-    private var teamRepository: TeamRepository
+    private var teamRepository: TeamRepository,
 ) {
     val faker = faker {  }
     @Test
