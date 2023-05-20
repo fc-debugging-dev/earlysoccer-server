@@ -1,4 +1,4 @@
-package com.fcdebug.earlysoccerserver
+package com.fcdebug.earlysoccerserver.TeamTest
 
 import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
 import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleDto
