@@ -1,7 +1,7 @@
 package com.fcdebug.earlysoccerserver
 
-import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
 import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
+import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleRepository
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
 import io.github.serpro69.kfaker.faker
@@ -14,8 +14,9 @@ import java.time.LocalDateTime
 
 @ActiveProfiles("test")
 @DataJpaTest
-class ScheduleTest @Autowired constructor(
-    private var teamRepository: TeamRepository,
+class ScheduleTest @Autowired constructor (
+    private val teamRepository: TeamRepository,
+    private val scheduleRepository: ScheduleRepository,
 ) {
     val faker = faker {  }
     @Test
@@ -30,12 +31,12 @@ class ScheduleTest @Autowired constructor(
         val opponent: String = faker.team.name()
 
         //when
-        val schedule: Schedule = Schedule.create(
+        val schedule: Schedule = scheduleRepository.save(Schedule.create(
             team = team,
             date = date,
             place = place,
             opponent = opponent,
-        )
+        ))
 
         //then
         assertThat(schedule.team.name).isEqualTo(teamName)
