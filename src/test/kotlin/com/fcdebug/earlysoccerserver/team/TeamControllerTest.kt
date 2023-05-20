@@ -1,16 +1,14 @@
-package com.fcdebug.earlysoccerserver.TeamTest
+package com.fcdebug.earlysoccerserver.team
 
 import com.fcdebug.earlysoccerserver.controller.TeamController
 import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleDto
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.service.TeamService
 import io.github.serpro69.kfaker.faker
-import org.json.JSONObject
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.json.JsonContent
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
