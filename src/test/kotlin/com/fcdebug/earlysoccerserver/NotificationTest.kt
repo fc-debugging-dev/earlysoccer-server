@@ -14,17 +14,11 @@ import org.springframework.test.context.ActiveProfiles
 
 @ActiveProfiles("test")
 @DataJpaTest
-class NotificationTest {
-    
-    @Autowired
-    private lateinit var memberRepository: MemberRepository
-    
-    @Autowired
-    private lateinit var teamRepository: TeamRepository
-    
-    @Autowired
-    private lateinit var notificationRepository: NotificationRepository
-    
+class NotificationTest @Autowired constructor(
+    val memberRepository: MemberRepository,
+    val teamRepository: TeamRepository,
+    val notificationRepository: NotificationRepository,
+){
     @Test
     fun `팀 공지사항을 생성한다`() {
         // given
