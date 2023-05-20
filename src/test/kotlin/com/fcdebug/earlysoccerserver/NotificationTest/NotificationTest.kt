@@ -1,4 +1,4 @@
-package com.fcdebug.earlysoccerserver.NotificationTest
+package com.fcdebug.earlysoccerserver
 
 import com.fcdebug.earlysoccerserver.domain.member.Member
 import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
@@ -15,9 +15,9 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 @DataJpaTest
 class NotificationTest @Autowired constructor(
-    private val memberRepository: MemberRepository,
-    private val teamRepository: TeamRepository,
-    private val notificationRepository: NotificationRepository,
+    val memberRepository: MemberRepository,
+    val teamRepository: TeamRepository,
+    val notificationRepository: NotificationRepository,
 ){
     @Test
     fun `팀 공지사항을 생성한다`() {
