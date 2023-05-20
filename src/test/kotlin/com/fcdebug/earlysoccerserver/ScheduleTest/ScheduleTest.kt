@@ -1,4 +1,4 @@
-package com.fcdebug.earlysoccerserver
+package com.fcdebug.earlysoccerserver.ScheduleTest
 
 import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
 import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleRepository
@@ -20,7 +20,7 @@ class ScheduleTest @Autowired constructor (
 ) {
     val faker = faker {  }
     @Test
-    fun `팀 스케줄을 생성한다`() {
+    fun `스케줄을 생성한다`() {
         //given
         val team: Team = teamRepository.save(
             Team.create(faker.team.name())

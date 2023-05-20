@@ -16,6 +16,15 @@ class Schedule(
     @Column(nullable = false) val opponent: String,
 ): AuditDateTimeEntity() {
 
+    fun toEntity() =
+        ScheduleDto(
+            id = id,
+            team = team,
+            date = date,
+            place = place,
+            opponent = opponent,
+        )
+
     companion object {
         fun create(team: Team, date: LocalDateTime, place: String, opponent: String): Schedule =
             Schedule(

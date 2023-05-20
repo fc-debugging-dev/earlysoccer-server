@@ -1,4 +1,7 @@
 package com.fcdebug.earlysoccerserver.domain.schedule
 
-class ScheduleRepository {
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface ScheduleRepository: JpaRepository<Schedule, Long> {
+    fun findByTeamId(id: Long): List<Schedule>
 }
