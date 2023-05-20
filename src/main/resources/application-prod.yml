@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/prod
+    username: prod
+    password: prod
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
+

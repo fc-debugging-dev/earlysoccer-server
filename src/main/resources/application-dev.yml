@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/dev
+    username: dev
+    password: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
