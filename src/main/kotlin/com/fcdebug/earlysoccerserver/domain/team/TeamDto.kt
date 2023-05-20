@@ -1,4 +1,9 @@
 package com.fcdebug.earlysoccerserver.domain.team
 
-class TeamDto {
-}
+data class TeamDto(
+    val id: Long?,
+    val name: String,
+    val teamImg: String?,
+    val teamMembers: MutableList<TeamMember>,
+    val notifications: MutableList<Notification>,
+)

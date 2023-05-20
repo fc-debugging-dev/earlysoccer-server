@@ -1,13 +1,13 @@
 package com.fcdebug.earlysoccerserver.service
 
-import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
+import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleDto
 import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleRepository
 import org.springframework.stereotype.Service
 
 @Service
-class TeamServiceImpl (
-    val scheduleRepository: ScheduleRepository
+class TeamService (
+    private val scheduleRepository: ScheduleRepository
 ) {
-    fun findTeamSchedules(id: Long): List<Schedule> =
-        scheduleRepository.findByTeamId(id)
+    fun findTeamSchedules(id: Long): List<ScheduleDto> =
+        scheduleRepository.findByTeamId(id).map { it.toEntity() }
 }
