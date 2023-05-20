@@ -1,4 +1,4 @@
-package com.fcdebug.earlysoccerserver
+package com.fcdebug.earlysoccerserver.NotificationTest
 
 import com.fcdebug.earlysoccerserver.domain.member.Member
 import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
