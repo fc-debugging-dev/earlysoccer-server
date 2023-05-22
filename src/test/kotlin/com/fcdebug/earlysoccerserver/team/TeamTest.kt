@@ -20,7 +20,6 @@ import java.time.LocalDateTime
 class TeamTest @Autowired constructor (
     private val teamRepository: TeamRepository,
     private val scheduleRepository: ScheduleRepository,
-    private val teamService: TeamService,
 ) {
     val faker = faker {  }
     @Test
@@ -32,25 +31,19 @@ class TeamTest @Autowired constructor (
         )
 
         //when
-        val schedules = mutableListOf<Schedule>()
-        for (i in 0..1) {
-            val schedule: Schedule = Schedule.create(
+        val schedules = listOf(
+            Schedule.create(
                 team = team,
                 date = LocalDateTime.now(),
                 place = faker.address.fullAddress(),
-                opponent = faker.team.name(),
-            )
-            schedules.add(schedule)
-        }
+                opponent = faker.team.name(),))
         scheduleRepository.saveAll(schedules)
-        val saveSchedules: List<ScheduleDto> = teamService.findTeamSchedules(team.toDto().id!!)
+        val saveSchedules: List<Schedule> = scheduleRepository.findByTeamId(team.toDto().id!!)
 
         //then
-        for (i in 0..1) {
-            assertThat(saveSchedules[i].team.name).isEqualTo(schedules[i].team.name)
-            assertThat(saveSchedules[i].date).isEqualTo(schedules[i].date)
-            assertThat(saveSchedules[i].place).isEqualTo(schedules[i].place)
-            assertThat(saveSchedules[i].opponent).isEqualTo(schedules[i].opponent)
-        }
+        assertThat(saveSchedules[0].team.name).isEqualTo(schedules[0].team.name)
+        assertThat(saveSchedules[0].date).isEqualTo(schedules[0].date)
+        assertThat(saveSchedules[0].place).isEqualTo(schedules[0].place)
+        assertThat(saveSchedules[0].opponent).isEqualTo(schedules[0].opponent)
     }
 }
