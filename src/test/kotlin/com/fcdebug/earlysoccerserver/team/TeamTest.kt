@@ -25,7 +25,7 @@ class TeamTest @Autowired constructor (
     val faker = faker {  }
     @Test
     @Transactional
-    fun `팀 스케줄을 가져온다`() {
+    fun `팀의 전체 스케줄을 가져온다`() {
         //given
         val team: Team = teamRepository.save(
             Team.create(faker.team.name())

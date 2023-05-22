@@ -32,7 +32,7 @@ class TeamControllerTest @Autowired constructor (
     lateinit var teamService: TeamService
 
     @Test
-    fun `팀 스케줄을 가져오는 API`() {
+    fun `팀 전체 스케줄을 가져오는 API`() {
         val team: Team = Team("Test team")
         val now: LocalDateTime = LocalDateTime.now()
         val place: String = faker.address.fullAddress()
