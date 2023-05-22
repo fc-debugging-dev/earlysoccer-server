@@ -9,5 +9,5 @@ class TeamService (
     private val scheduleRepository: ScheduleRepository
 ) {
     fun findTeamSchedules(id: Long): List<ScheduleDto> =
-        scheduleRepository.findByTeamId(id).map { it.toEntity() }
+        scheduleRepository.findByTeamId(id).map { ScheduleDto.toDto(it) }
 }
