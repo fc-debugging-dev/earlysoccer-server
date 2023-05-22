@@ -37,7 +37,7 @@ class ScheduleTest @Autowired constructor (
                 place = faker.address.fullAddress(),
                 opponent = faker.team.name(),))
         scheduleRepository.saveAll(schedules)
-        val saveSchedules: List<Schedule> = scheduleRepository.findByTeamId(team.toDto().id!!)
+        val saveSchedules: List<Schedule> = scheduleRepository.findByTeamId(team.id!!)
 
         //then
         assertThat(saveSchedules[0].team.name).isEqualTo(schedules[0].team.name)

@@ -11,8 +11,8 @@ data class ScheduleDto (
     val opponent: String,
 ) {
     companion object {
-        fun toDto(schedule: Schedule,
-        ) = ScheduleDto(
+        fun toDto(schedule: Schedule) =
+            ScheduleDto(
                 id = schedule.id,
                 team = schedule.team,
                 date = schedule.date,
