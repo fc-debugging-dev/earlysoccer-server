@@ -23,4 +23,19 @@ class TeamTest @Autowired constructor (
 ) {
     val faker = faker {  }
 
+    @Test
+    fun `팀 생성 API`() {
+        //given
+        val name: String = faker.team.name()
+        val teamImg: String = "Test Profile Image"
+
+        //when
+        val team = teamRepository.save(
+            Team.create(name, teamImg)
+        )
+
+        //then
+        assertThat(team.name).isEqualTo(name)
+        assertThat(team.teamImg).isEqualTo(teamImg)
+    }
 }
