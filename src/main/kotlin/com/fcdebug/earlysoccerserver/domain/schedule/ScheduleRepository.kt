@@ -4,4 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ScheduleRepository: JpaRepository<Schedule, Long> {
     fun findByTeamId(id: Long): List<Schedule>
+
+    fun findByIdAndTeamId(id: Long, teamId: Long): Schedule
 }

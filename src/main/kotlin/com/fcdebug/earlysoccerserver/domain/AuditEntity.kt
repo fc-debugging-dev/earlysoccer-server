@@ -15,8 +15,7 @@ abstract class AuditDateTimeEntity: AuditIDEntity() {
     var createdAt: LocalDateTime = LocalDateTime.now()
 
     @LastModifiedDate
-    @Column()
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 }
 
 @MappedSuperclass
