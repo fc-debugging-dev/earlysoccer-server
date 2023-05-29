@@ -11,8 +11,8 @@ import jakarta.persistence.ManyToOne
 @Entity
 class TeamMember(
     @Enumerated(EnumType.STRING) val role: Role,
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class) val member: Member,
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Team::class) val team: Team,
+    @ManyToOne(fetch = FetchType.LAZY) val member: Member,
+    @ManyToOne(fetch = FetchType.LAZY) val team: Team,
 ): AuditDateTimeEntity() {
 }
 enum class Role {

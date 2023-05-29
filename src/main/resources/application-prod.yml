@@ -14,9 +14,3 @@ spring:
       ddl-auto: validate
 
     show-sql: false
-
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: false
-

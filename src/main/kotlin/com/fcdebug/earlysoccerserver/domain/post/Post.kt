@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class Post(
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Member::class) val writer: Member,
+    @ManyToOne(fetch = FetchType.LAZY) val writer: Member,
     @Column(nullable = false) val title: String,
     @Column(nullable = false) val content: String,
     @Enumerated(EnumType.STRING) val category: Category
