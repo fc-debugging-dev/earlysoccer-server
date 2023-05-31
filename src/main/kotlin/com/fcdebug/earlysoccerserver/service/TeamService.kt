@@ -31,8 +31,8 @@ class TeamService (
         ))
     }
 
-    fun updateTeamSchedules(scheduleId: Long, teamId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
-        val schedule: Schedule = scheduleRepository.findByIdAndTeamId(scheduleId, teamId)
+    fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
+        val schedule: Schedule = scheduleRepository.findById(scheduleId).orElse(null)
         schedule.updateSchedule(req)
         return ScheduleResponseDto.toDto(scheduleRepository.save(schedule))
     }

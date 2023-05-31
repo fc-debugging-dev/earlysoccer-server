@@ -39,12 +39,11 @@ class TeamController(
         return ResponseEntity(res, HttpStatus.CREATED)
     }
 
-    @PutMapping("/{teamId}/schedules/{scheduleId}")
+    @PutMapping("/schedules/{scheduleId}")
     fun updateTeamSchedule(
         @PathVariable scheduleId: String,
-        @PathVariable teamId: String,
         @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> {
-        val res = teamService.updateTeamSchedules(scheduleId.toLong(), teamId.toLong(), req)
+        val res = teamService.updateTeamSchedules(scheduleId.toLong(), req)
         return ResponseEntity(res, HttpStatus.OK)
     }
 
