@@ -15,21 +15,24 @@ class Schedule(
     @Column(nullable = false) var date: LocalDateTime,
     @Column(nullable = false) var place: String,
     @Column(nullable = false) var opponent: String,
+    var note: String,
 ): AuditDateTimeEntity() {
 
     fun updateSchedule(req: ScheduleRequestDto) {
         this.date = req.date
         this.place = req.place
         this.opponent = req.opponent
+        this.note = req.note
     }
 
     companion object {
-        fun create(team: Team, date: LocalDateTime, place: String, opponent: String): Schedule =
+        fun create(team: Team, date: LocalDateTime, place: String, opponent: String, note: String): Schedule =
             Schedule(
                 team = team,
                 date = date,
                 place = place,
                 opponent = opponent,
+                note = note,
             )
     }
 }

@@ -8,6 +8,7 @@ data class ScheduleResponseDto(
     val date: LocalDateTime,
     val place: String,
     val opponent: String,
+    val note: String,
 ) {
     companion object {
         fun toDto(schedule: Schedule) =
@@ -16,6 +17,7 @@ data class ScheduleResponseDto(
                 date = schedule.date,
                 place = schedule.place,
                 opponent = schedule.opponent,
+                note = schedule.note,
             )
     }
 }

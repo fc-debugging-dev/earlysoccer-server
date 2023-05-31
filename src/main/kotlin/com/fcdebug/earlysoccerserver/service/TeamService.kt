@@ -25,7 +25,8 @@ class TeamService (
                 team = team,
                 date = req.date,
                 place = req.place,
-                opponent = req.opponent
+                opponent = req.opponent,
+                note = req.note,
             )
         ))
     }

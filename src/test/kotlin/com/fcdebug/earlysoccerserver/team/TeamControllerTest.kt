@@ -63,7 +63,7 @@ class TeamControllerTest @Autowired constructor (
         val localDateTimeNow = LocalDateTime.parse(now, formatter)
         val place: String = faker.address.fullAddress()
         val schedules = listOf(ScheduleResponseDto(
-            1, localDateTimeNow, place, "Test opponent"))
+            1, localDateTimeNow, place, "Test opponent", "Test Note"))
         given(teamService.findTeamSchedules(1)).willReturn(schedules)
         mvc.perform(get("/team/1/schedules"))
             .andExpect(status().isOk)
@@ -72,6 +72,7 @@ class TeamControllerTest @Autowired constructor (
             .andExpect(jsonPath("\$.[0].date").value(localDateTimeNow.toString()))
             .andExpect(jsonPath("\$.[0].place").value(place))
             .andExpect(jsonPath("\$.[0].opponent").value("Test opponent"))
+            .andExpect(jsonPath("\$.[0].note").value("Test Note"))
     }
 
     @Test
@@ -80,13 +81,15 @@ class TeamControllerTest @Autowired constructor (
         val localDateTimeNow = LocalDateTime.parse(now, formatter)
         val place: String = faker.address.fullAddress()
         val opponent = "Test opponent"
+        val note = "Test Note"
         val req = ScheduleRequestDto(
             date = localDateTimeNow,
             place = place,
             opponent = opponent,
+            note = note,
         )
         given(teamService.createTeamSchedules(1, req)).willReturn(
-            ScheduleResponseDto(1, localDateTimeNow, place, opponent)
+            ScheduleResponseDto(1, localDateTimeNow, place, opponent, note)
         )
         mvc.perform(post("/team/1/schedules")
             .accept(MediaType.APPLICATION_JSON)
@@ -97,7 +100,8 @@ class TeamControllerTest @Autowired constructor (
             .andExpect(jsonPath("\$.id").value(1))
             .andExpect(jsonPath("\$.date").value(localDateTimeNow.toString()))
             .andExpect(jsonPath("\$.place").value(place))
-            .andExpect(jsonPath("\$.opponent").value("Test opponent"))
+            .andExpect(jsonPath("\$.opponent").value(opponent))
+            .andExpect(jsonPath("\$.note").value(note))
     }
 
     @Test
@@ -106,13 +110,15 @@ class TeamControllerTest @Autowired constructor (
         val localDateTimeNow = LocalDateTime.parse(now, formatter)
         val place: String = faker.address.fullAddress()
         val opponent = "Test opponent"
+        val note = "Test Note"
         val req = ScheduleRequestDto(
             date = localDateTimeNow,
             place = place,
             opponent = opponent,
+            note = note,
         )
         given(teamService.updateTeamSchedules(1, 1, req)).willReturn(
-            ScheduleResponseDto(1, localDateTimeNow, place, opponent)
+            ScheduleResponseDto(1, localDateTimeNow, place, opponent, note)
         )
         mvc.perform(put("/team/1/schedules/1")
             .accept(MediaType.APPLICATION_JSON)
@@ -124,5 +130,6 @@ class TeamControllerTest @Autowired constructor (
             .andExpect(jsonPath("\$.date").value(localDateTimeNow.toString()))
             .andExpect(jsonPath("\$.place").value(place))
             .andExpect(jsonPath("\$.opponent").value("Test opponent"))
+            .andExpect(jsonPath("\$.note").value("Test Note"))
     }
 }

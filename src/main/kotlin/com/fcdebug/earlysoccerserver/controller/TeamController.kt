@@ -47,4 +47,10 @@ class TeamController(
         val res = teamService.updateTeamSchedules(scheduleId.toLong(), teamId.toLong(), req)
         return ResponseEntity(res, HttpStatus.OK)
     }
+
+    @DeleteMapping("/schedules/{scheduleId}")
+    fun deleteTeamSchedule(@PathVariable scheduleId: String): ResponseEntity<HttpStatus> {
+        teamService.deleteTeamSchedules(scheduleId.toLong())
+        return ResponseEntity(HttpStatus.OK)
+    }
 }

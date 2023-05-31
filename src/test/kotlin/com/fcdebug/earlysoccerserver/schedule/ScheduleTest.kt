@@ -35,7 +35,8 @@ class ScheduleTest @Autowired constructor (
                 team = team,
                 date = LocalDateTime.now(),
                 place = faker.address.fullAddress(),
-                opponent = faker.team.name(),))
+                opponent = faker.team.name(),
+                note = "Test Note"))
         scheduleRepository.saveAll(schedules)
         val saveSchedules: List<Schedule> = scheduleRepository.findByTeamId(team.id!!)
 
@@ -44,6 +45,7 @@ class ScheduleTest @Autowired constructor (
         assertThat(saveSchedules[0].date).isEqualTo(schedules[0].date)
         assertThat(saveSchedules[0].place).isEqualTo(schedules[0].place)
         assertThat(saveSchedules[0].opponent).isEqualTo(schedules[0].opponent)
+        assertThat(saveSchedules[0].note).isEqualTo(schedules[0].note)
     }
 
     @Test
@@ -56,6 +58,7 @@ class ScheduleTest @Autowired constructor (
         val date: LocalDateTime = LocalDateTime.now()
         val place: String = faker.address.fullAddress()
         val opponent: String = faker.team.name()
+        val note: String = "Test Note"
 
         //when
         val schedule: Schedule = scheduleRepository.save(Schedule.create(
@@ -63,6 +66,7 @@ class ScheduleTest @Autowired constructor (
             date = date,
             place = place,
             opponent = opponent,
+            note = note,
         ))
 
         //then
@@ -70,5 +74,6 @@ class ScheduleTest @Autowired constructor (
         assertThat(schedule.date).isEqualTo(date)
         assertThat(schedule.place).isEqualTo(place)
         assertThat(schedule.opponent).isEqualTo(opponent)
+        assertThat(schedule.note).isEqualTo(note)
     }
 }
