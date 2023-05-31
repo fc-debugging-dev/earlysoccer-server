@@ -8,6 +8,7 @@ import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleRepository
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,8 +16,13 @@ class TeamService (
     private val teamRepository: TeamRepository,
     private val scheduleRepository: ScheduleRepository
 ) {
-    fun findTeamSchedules(id: Long): List<ScheduleResponseDto> =
-        scheduleRepository.findByTeamId(id).map { ScheduleResponseDto.toDto(it) }
+    fun findTeamSchedules(teamId: Long, year: String?, month: String?, limit: Int?): List<ScheduleResponseDto> {
+        limit?.run {
+            return scheduleRepository.findByTeamIdByRecent(teamId, limit).map {
+                ScheduleResponseDto.toDto(it) }
+        }
+        return scheduleRepository.findByTeamIdByYearByMonth(teamId, year, month).map { ScheduleResponseDto.toDto(it) }
+    }
 
     fun createTeamSchedules(teamId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
         val team: Team = teamRepository.getReferenceById(teamId)
@@ -33,8 +39,11 @@ class TeamService (
 
     fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
         val schedule: Schedule = scheduleRepository.findById(scheduleId).orElse(null)
-        schedule.updateSchedule(req)
-        return ScheduleResponseDto.toDto(scheduleRepository.save(schedule))
+        schedule.run {
+            this.updateSchedule(req)
+            scheduleRepository.save(this)
+        }
+        return ScheduleResponseDto.toDto(schedule)
     }
 
     fun deleteTeamSchedules(scheduleId: Long) = scheduleRepository.deleteById(scheduleId)

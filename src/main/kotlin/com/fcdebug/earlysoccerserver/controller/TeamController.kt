@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -28,24 +29,25 @@ class TeamController(
     }
 
     @GetMapping("/{teamId}/schedules")
-    fun findTeamSchedules(@PathVariable teamId: String): ResponseEntity<List<ScheduleResponseDto>> =
-        ResponseEntity(teamService.findTeamSchedules(teamId.toLong()), HttpStatus.OK)
+    fun findTeamSchedules(
+        @PathVariable teamId: String,
+        @RequestParam("year") year: String?,
+        @RequestParam("month") month: String?,
+        @RequestParam("limit") limit: String?,): ResponseEntity<List<ScheduleResponseDto>> =
+        ResponseEntity(teamService.findTeamSchedules(teamId.toLong(), year, month, limit?.toInt()),
+            HttpStatus.OK)
 
     @PostMapping("/{teamId}/schedules")
     fun createTeamSchedule(
         @PathVariable teamId: String,
-        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> {
-        val res: ScheduleResponseDto = teamService.createTeamSchedules(teamId.toLong(), req)
-        return ResponseEntity(res, HttpStatus.CREATED)
-    }
+        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> =
+        ResponseEntity(teamService.createTeamSchedules(teamId.toLong(), req), HttpStatus.CREATED)
 
     @PutMapping("/schedules/{scheduleId}")
     fun updateTeamSchedule(
         @PathVariable scheduleId: String,
-        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> {
-        val res = teamService.updateTeamSchedules(scheduleId.toLong(), req)
-        return ResponseEntity(res, HttpStatus.OK)
-    }
+        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> =
+            ResponseEntity(teamService.updateTeamSchedules(scheduleId.toLong(), req), HttpStatus.OK)
 
     @DeleteMapping("/schedules/{scheduleId}")
     fun deleteTeamSchedule(@PathVariable scheduleId: String): ResponseEntity<HttpStatus> {
