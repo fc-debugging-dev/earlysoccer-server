@@ -21,3 +21,8 @@ spring:
         globally_quoted_identifiers: true
 
     show-sql: true
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false

@@ -17,4 +17,12 @@ class Team(
 
 ): AuditDateTimeEntity() {
     fun addMember(member: TeamMember) = teamMembers.add(member)
+
+    companion object {
+        fun create(name: String, teamImg: String? = null): Team =
+            Team(
+                name = name,
+                teamImg = teamImg
+            )
+    }
 }
