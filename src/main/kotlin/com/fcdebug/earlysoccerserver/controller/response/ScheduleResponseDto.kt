@@ -1,23 +1,23 @@
-package com.fcdebug.earlysoccerserver.domain.schedule
+package com.fcdebug.earlysoccerserver.controller.response
 
-import com.fcdebug.earlysoccerserver.domain.team.Team
+import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
 import java.time.LocalDateTime
 
-data class ScheduleDto (
+data class ScheduleResponseDto(
     val id: Long?,
-    val team: Team,
     val date: LocalDateTime,
     val place: String,
     val opponent: String,
+    val note: String,
 ) {
     companion object {
         fun toDto(schedule: Schedule) =
-            ScheduleDto(
+            ScheduleResponseDto(
                 id = schedule.id,
-                team = schedule.team,
                 date = schedule.date,
                 place = schedule.place,
                 opponent = schedule.opponent,
+                note = schedule.note,
             )
     }
 }
