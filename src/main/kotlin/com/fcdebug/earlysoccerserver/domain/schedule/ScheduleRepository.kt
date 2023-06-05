@@ -49,8 +49,8 @@ class ScheduleJdslRepositoryImpl(
             select(entity(Schedule::class))
             from(entity(Schedule::class))
             fetch(Schedule::team)
-            fetch(Schedule::votes)
-            fetch(Vote::member)
+            fetch(Schedule::votes, JoinType.LEFT)
+            fetch(Vote::member, JoinType.LEFT)
             whereAnd(
                 column(Team::id).equal(teamId),
                 column(Schedule::date).between(start, end)

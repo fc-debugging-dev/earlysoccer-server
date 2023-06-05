@@ -23,10 +23,10 @@ class TeamService (
 ) {
     val log = KotlinLogging.logger {  }
     fun findTeamSchedules(teamId: Long, year: String?, month: String?, limit: Int?): List<ScheduleResponseDto> {
-        val attended: MutableList<MemberResponseDto> = mutableListOf()
-        val absent: MutableList<MemberResponseDto> = mutableListOf()
         limit?.run {
             return scheduleRepository.findByTeamIdByRecent(teamId, limit).map { schedule ->
+                val attended: MutableList<MemberResponseDto> = mutableListOf()
+                val absent: MutableList<MemberResponseDto> = mutableListOf()
                 schedule.votes.forEach { vote ->
                     if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
                     else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
@@ -34,6 +34,8 @@ class TeamService (
                 ScheduleResponseDto.toDto(schedule, attended, absent) }
         }
         return scheduleRepository.findByTeamIdByYearByMonth(teamId, year, month).map {schedule ->
+            val attended: MutableList<MemberResponseDto> = mutableListOf()
+            val absent: MutableList<MemberResponseDto> = mutableListOf()
             schedule.votes.forEach { vote ->
                 if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
                 else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
