@@ -5,12 +5,14 @@ import com.fcdebug.earlysoccerserver.controller.request.TeamRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.VoteRequestDto
 import com.fcdebug.earlysoccerserver.controller.response.MemberResponseDto
 import com.fcdebug.earlysoccerserver.controller.response.ScheduleResponseDto
+import com.fcdebug.earlysoccerserver.controller.response.VoteResponseDto
 import com.fcdebug.earlysoccerserver.domain.member.Member
 import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
 import com.fcdebug.earlysoccerserver.domain.schedule.*
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
@@ -53,17 +55,12 @@ class TeamService (
                 opponent = req.opponent,
                 note = req.note,
             )
-        ), mutableListOf<MemberResponseDto>(), mutableListOf<MemberResponseDto>())
+        ), mutableListOf(), mutableListOf())
     }
 
-    fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
-        val schedule: Schedule = scheduleRepository.findById(scheduleId).orElse(null)
-        schedule.run {
-            this.updateSchedule(req)
-            scheduleRepository.save(this)
-        }
-        return ScheduleResponseDto.toDto(schedule,
-            mutableListOf<MemberResponseDto>(), mutableListOf<MemberResponseDto>())
+    @Transactional
+    fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto) {
+        scheduleRepository.updateSchedule(scheduleId, req).executeUpdate()
     }
 
     fun deleteTeamSchedules(scheduleId: Long) = scheduleRepository.deleteById(scheduleId)
@@ -73,11 +70,15 @@ class TeamService (
             Team.create(name = req.name, teamImg = req.teamImg)
         ))
 
-    fun createTeamScheduleVote(scheduleId: Long, req: VoteRequestDto) {
+    fun createTeamScheduleVote(scheduleId: Long, req: VoteRequestDto): VoteResponseDto {
         val schedule: Schedule = scheduleRepository.getReferenceById(scheduleId)
         val member: Member = memberRepository.getReferenceById(req.memberId)
-        voteRepository.save(
+        return VoteResponseDto.toDto(voteRepository.save(
             Vote.create(schedule, member, req.status)
-        )
+        ))
     }
+
+    @Transactional
+    fun updateTeamScheduleVotes(voteId: Long, req: VoteRequestDto) =
+        voteRepository.updateVote(voteId, req).executeUpdate()
 }

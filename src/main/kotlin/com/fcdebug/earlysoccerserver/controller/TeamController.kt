@@ -4,6 +4,8 @@ import com.fcdebug.earlysoccerserver.controller.request.ScheduleRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.TeamRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.VoteRequestDto
 import com.fcdebug.earlysoccerserver.controller.response.ScheduleResponseDto
+import com.fcdebug.earlysoccerserver.controller.response.VoteResponseDto
+import com.fcdebug.earlysoccerserver.domain.schedule.Vote
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.service.TeamService
 import org.springframework.http.HttpStatus
@@ -47,8 +49,10 @@ class TeamController(
     @PutMapping("/schedules/{scheduleId}")
     fun updateTeamSchedule(
         @PathVariable scheduleId: String,
-        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> =
-            ResponseEntity(teamService.updateTeamSchedules(scheduleId.toLong(), req), HttpStatus.OK)
+        @RequestBody req: ScheduleRequestDto): ResponseEntity<HttpStatus> {
+        teamService.updateTeamSchedules(scheduleId.toLong(), req)
+        return ResponseEntity(HttpStatus.OK)
+    }
 
     @DeleteMapping("/schedules/{scheduleId}")
     fun deleteTeamSchedule(@PathVariable scheduleId: String): ResponseEntity<HttpStatus> {
@@ -59,8 +63,15 @@ class TeamController(
     @PostMapping("/schedules/{scheduleId}/vote")
     fun voteTeamSchedule(
         @PathVariable scheduleId: String,
+        @RequestBody req: VoteRequestDto): ResponseEntity<VoteResponseDto> {
+        return ResponseEntity(teamService.createTeamScheduleVote(scheduleId.toLong(), req), HttpStatus.CREATED)
+    }
+
+    @PutMapping("/schedules/vote/{voteId}")
+    fun updateVoteTeamSchedule(
+        @PathVariable voteId: String,
         @RequestBody req: VoteRequestDto): ResponseEntity<HttpStatus> {
-        teamService.createTeamScheduleVote(scheduleId.toLong(), req)
-        return ResponseEntity(HttpStatus.CREATED)
+        teamService.updateTeamScheduleVotes(voteId.toLong(), req)
+        return ResponseEntity(HttpStatus.OK)
     }
 }

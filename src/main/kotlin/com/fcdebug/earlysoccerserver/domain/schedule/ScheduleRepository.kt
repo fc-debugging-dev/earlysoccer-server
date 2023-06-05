@@ -1,10 +1,14 @@
 package com.fcdebug.earlysoccerserver.domain.schedule
 
+import com.fcdebug.earlysoccerserver.controller.request.ScheduleRequestDto
 import com.fcdebug.earlysoccerserver.domain.team.Team
+import com.linecorp.kotlinjdsl.querydsl.expression.col
 import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
+import com.linecorp.kotlinjdsl.spring.data.updateQuery
+import jakarta.persistence.Query
 import jakarta.persistence.criteria.JoinType
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDateTime
@@ -18,6 +22,8 @@ interface ScheduleJdslRepository {
     fun findByTeamIdByRecent(teamId: Long, limit: Int): List<Schedule>
 
     fun findByTeamIdByYearByMonth(teamId: Long, year: String?, month: String?): List<Schedule>
+
+    fun updateSchedule(scheduleId: Long, req: ScheduleRequestDto): Query
 }
 
 class ScheduleJdslRepositoryImpl(
@@ -55,6 +61,17 @@ class ScheduleJdslRepositoryImpl(
                 column(Team::id).equal(teamId),
                 column(Schedule::date).between(start, end)
             )
+        }
+    }
+
+    override fun updateSchedule(scheduleId: Long, req: ScheduleRequestDto): Query {
+        return queryFactory.updateQuery<Schedule> {
+            where(col(Schedule::id).equal(scheduleId))
+            setParams(col(Schedule::place) to req.place)
+            setParams(col(Schedule::date) to req.date)
+            setParams(col(Schedule::opponent) to req.opponent)
+            setParams(col(Schedule::note) to req.note)
+            setParams(col(Schedule::updatedAt) to LocalDateTime.now())
         }
     }
 }
