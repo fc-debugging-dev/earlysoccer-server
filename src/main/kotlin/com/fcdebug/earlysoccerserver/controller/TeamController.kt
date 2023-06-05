@@ -36,8 +36,9 @@ class TeamController(
         @PathVariable teamId: String,
         @RequestParam("year") year: String?,
         @RequestParam("month") month: String?,
-        @RequestParam("limit") limit: String?,): ResponseEntity<List<ScheduleResponseDto>> =
-        ResponseEntity(teamService.findTeamSchedules(teamId.toLong(), year, month, limit?.toInt()),
+        @RequestParam("start") start: String?,
+        @RequestParam("end") end: String?,): ResponseEntity<List<ScheduleResponseDto>> =
+        ResponseEntity(teamService.findTeamSchedules(teamId.toLong(), year, month, start, end),
             HttpStatus.OK)
 
     @PostMapping("/{teamId}/schedules")

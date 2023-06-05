@@ -24,25 +24,23 @@ class TeamService (
     private val memberRepository: MemberRepository,
 ) {
     val log = KotlinLogging.logger {  }
-    fun findTeamSchedules(teamId: Long, year: String?, month: String?, limit: Int?): List<ScheduleResponseDto> {
-        limit?.run {
-            return scheduleRepository.findByTeamIdByRecent(teamId, limit).map { schedule ->
-                val attended: MutableList<MemberResponseDto> = mutableListOf()
-                val absent: MutableList<MemberResponseDto> = mutableListOf()
-                schedule.votes.forEach { vote ->
-                    if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
-                    else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
-                }
-                ScheduleResponseDto.toDto(schedule, attended, absent) }
+    fun findTeamSchedules(teamId: Long, year: String?, month: String?,
+                          start: String?, end: String?): List<ScheduleResponseDto> {
+        var scheduleList = listOf<Schedule>()
+        if (year != null && month != null) {
+            scheduleRepository.findByTeamIdByYearMonth(teamId, year, month).also { scheduleList = it }
+        } else if (start != null && end != null) {
+            scheduleRepository.findByTeamIdByRange(teamId, start, end).also { scheduleList = it }
         }
-        return scheduleRepository.findByTeamIdByYearByMonth(teamId, year, month).map {schedule ->
+        return scheduleList.map { schedule ->
             val attended: MutableList<MemberResponseDto> = mutableListOf()
             val absent: MutableList<MemberResponseDto> = mutableListOf()
             schedule.votes.forEach { vote ->
                 if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
                 else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
             }
-            ScheduleResponseDto.toDto(schedule, attended, absent) }
+            ScheduleResponseDto.toDto(schedule, attended, absent)
+        }
     }
 
     fun createTeamSchedules(teamId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
