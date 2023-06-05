@@ -5,6 +5,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
+import jakarta.persistence.criteria.JoinType
 import org.springframework.data.jpa.repository.JpaRepository
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -26,9 +27,11 @@ class ScheduleJdslRepositoryImpl(
         val standard: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"))
         val end: LocalDateTime = YearMonth.parse(standard).atEndOfMonth().atTime(23,59,59)
         return queryFactory.listQuery<Schedule> {
-            select(entity(Schedule::class))
+            selectDistinct(entity(Schedule::class))
             from(entity(Schedule::class))
             fetch(Schedule::team)
+            fetch(Schedule::votes, JoinType.LEFT)
+            fetch(Vote::member, JoinType.LEFT)
             whereAnd(
                 column(Team::id).equal(teamId),
                 column(Schedule::date).between(LocalDateTime.now(), end)
@@ -46,6 +49,8 @@ class ScheduleJdslRepositoryImpl(
             select(entity(Schedule::class))
             from(entity(Schedule::class))
             fetch(Schedule::team)
+            fetch(Schedule::votes)
+            fetch(Vote::member)
             whereAnd(
                 column(Team::id).equal(teamId),
                 column(Schedule::date).between(start, end)

@@ -20,9 +20,6 @@ class Team(
 
     companion object {
         fun create(name: String, teamImg: String? = null): Team =
-            Team(
-                name = name,
-                teamImg = teamImg
-            )
+            Team(name, teamImg)
     }
 }

@@ -15,6 +15,11 @@ class Vote(
     @ManyToOne(fetch = FetchType.LAZY) val member: Member,
     @Enumerated(EnumType.STRING) val status: Status
 ): AuditDateTimeEntity() {
+
+    companion object {
+        fun create(schedule: Schedule, member: Member, status: String) =
+            Vote(schedule, member, Status.valueOf(status))
+    }
 }
 
 enum class Status {
