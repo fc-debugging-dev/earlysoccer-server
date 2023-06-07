@@ -24,8 +24,8 @@ class TeamService (
     private val memberRepository: MemberRepository,
 ) {
     val log = KotlinLogging.logger {  }
-    fun findTeamSchedules(teamId: Long, year: String?, month: String?,
-                          start: String?, end: String?): List<ScheduleResponseDto> {
+    fun findTeamSchedules(teamId: Long, year: String?=null, month: String?=null,
+                          start: String?=null, end: String?=null): List<ScheduleResponseDto> {
         var scheduleList = listOf<Schedule>()
         if (year != null && month != null) {
             scheduleRepository.findByTeamIdByYearMonth(teamId, year, month).also { scheduleList = it }
@@ -57,8 +57,15 @@ class TeamService (
     }
 
     @Transactional
-    fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto) {
-        scheduleRepository.updateSchedule(scheduleId, req).executeUpdate()
+    fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
+        val attended: MutableList<MemberResponseDto> = mutableListOf()
+        val absent: MutableList<MemberResponseDto> = mutableListOf()
+        val schedule: Schedule = scheduleRepository.findById(scheduleId=scheduleId).also { it.updateSchedule(req) }
+        schedule.votes.forEach { vote ->
+            if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
+            else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
+        }
+        return ScheduleResponseDto.toDto(scheduleRepository.save(schedule), attended, absent)
     }
 
     fun deleteTeamSchedules(scheduleId: Long) = scheduleRepository.deleteById(scheduleId)
@@ -77,6 +84,8 @@ class TeamService (
     }
 
     @Transactional
-    fun updateTeamScheduleVotes(voteId: Long, req: VoteRequestDto) =
-        voteRepository.updateVote(voteId, req).executeUpdate()
+    fun updateTeamScheduleVotes(voteId: Long, req: VoteRequestDto): VoteResponseDto {
+        val vote: Vote = voteRepository.getReferenceById(voteId).also { it.updateVote(req) }
+        return VoteResponseDto.toDto(voteRepository.save(vote))
+    }
 }

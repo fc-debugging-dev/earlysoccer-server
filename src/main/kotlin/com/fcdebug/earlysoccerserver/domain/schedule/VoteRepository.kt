@@ -15,17 +15,9 @@ interface VoteRepository: JpaRepository<Vote, Long>, VoteJdslRepository {
 }
 
 interface VoteJdslRepository {
-    fun updateVote(voteId: Long, req: VoteRequestDto): Query
 }
 
 class VoteJdslRepositoryImpl(
     private val queryFactory: SpringDataQueryFactory,
 ): VoteJdslRepository {
-    override fun updateVote(voteId: Long, req: VoteRequestDto): Query {
-        return queryFactory.updateQuery<Vote> {
-            where(col(Vote::id).equal(voteId))
-            setParams(col(Vote::status) to Status.valueOf(req.status))
-            setParams(col(Vote::updatedAt) to LocalDateTime.now())
-        }
-    }
 }

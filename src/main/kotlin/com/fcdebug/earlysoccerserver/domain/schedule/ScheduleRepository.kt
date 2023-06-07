@@ -7,6 +7,7 @@ import com.linecorp.kotlinjdsl.querydsl.expression.column
 import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
+import com.linecorp.kotlinjdsl.spring.data.selectQuery
 import com.linecorp.kotlinjdsl.spring.data.updateQuery
 import jakarta.persistence.Query
 import jakarta.persistence.criteria.JoinType
@@ -23,7 +24,7 @@ interface ScheduleJdslRepository {
 
     fun findByTeamIdByYearMonth(teamId: Long, year: String?, month: String?): List<Schedule>
 
-    fun updateSchedule(scheduleId: Long, req: ScheduleRequestDto): Query
+    fun findById(scheduleId: Long): Schedule
 }
 
 class ScheduleJdslRepositoryImpl(
@@ -58,14 +59,15 @@ class ScheduleJdslRepositoryImpl(
         return scheduleListQuery(teamId, start, end)
     }
 
-    override fun updateSchedule(scheduleId: Long, req: ScheduleRequestDto): Query {
-        return queryFactory.updateQuery<Schedule> {
+    override fun findById(scheduleId: Long): Schedule {
+        return queryFactory.listQuery<Schedule> {
+            select(entity(Schedule::class))
+            from(entity(Schedule::class))
             where(col(Schedule::id).equal(scheduleId))
-            setParams(col(Schedule::place) to req.place)
-            setParams(col(Schedule::date) to req.date)
-            setParams(col(Schedule::opponent) to req.opponent)
-            setParams(col(Schedule::note) to req.note)
-            setParams(col(Schedule::updatedAt) to LocalDateTime.now())
-        }
+            fetch(Schedule::team)
+            fetch(Schedule::votes, JoinType.LEFT)
+            fetch(Vote::member, JoinType.LEFT)
+            where(col(Schedule::id).equal(scheduleId))
+        }.first()
     }
 }

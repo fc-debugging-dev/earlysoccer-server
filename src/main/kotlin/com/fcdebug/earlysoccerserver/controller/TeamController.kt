@@ -50,10 +50,8 @@ class TeamController(
     @PutMapping("/schedules/{scheduleId}")
     fun updateTeamSchedule(
         @PathVariable scheduleId: String,
-        @RequestBody req: ScheduleRequestDto): ResponseEntity<HttpStatus> {
-        teamService.updateTeamSchedules(scheduleId.toLong(), req)
-        return ResponseEntity(HttpStatus.OK)
-    }
+        @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> =
+        ResponseEntity(teamService.updateTeamSchedules(scheduleId.toLong(), req), HttpStatus.OK)
 
     @DeleteMapping("/schedules/{scheduleId}")
     fun deleteTeamSchedule(@PathVariable scheduleId: String): ResponseEntity<HttpStatus> {
@@ -71,8 +69,6 @@ class TeamController(
     @PutMapping("/schedules/vote/{voteId}")
     fun updateVoteTeamSchedule(
         @PathVariable voteId: String,
-        @RequestBody req: VoteRequestDto): ResponseEntity<HttpStatus> {
-        teamService.updateTeamScheduleVotes(voteId.toLong(), req)
-        return ResponseEntity(HttpStatus.OK)
-    }
+        @RequestBody req: VoteRequestDto): ResponseEntity<VoteResponseDto> =
+        ResponseEntity(teamService.updateTeamScheduleVotes(voteId.toLong(), req), HttpStatus.OK)
 }

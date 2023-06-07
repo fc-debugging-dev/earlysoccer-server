@@ -8,9 +8,11 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 
 @Entity
+@DynamicUpdate
 class Schedule(
     @ManyToOne(fetch = FetchType.LAZY) val team: Team,
     @Column(nullable = false) var date: LocalDateTime,

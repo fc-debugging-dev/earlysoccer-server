@@ -9,8 +9,10 @@ import jakarta.persistence.EnumType
 import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType
 import jakarta.persistence.ManyToOne
+import org.hibernate.annotations.DynamicUpdate
 
 @Entity
+@DynamicUpdate
 class Vote(
     @ManyToOne(fetch = FetchType.LAZY) val schedule: Schedule,
     @ManyToOne(fetch = FetchType.LAZY) val member: Member,
