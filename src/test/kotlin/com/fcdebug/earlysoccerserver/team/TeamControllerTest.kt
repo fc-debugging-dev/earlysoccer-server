@@ -3,7 +3,9 @@ package com.fcdebug.earlysoccerserver.team
 import com.fcdebug.earlysoccerserver.controller.TeamController
 import com.fcdebug.earlysoccerserver.controller.request.ScheduleRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.TeamRequestDto
+import com.fcdebug.earlysoccerserver.controller.request.VoteRequestDto
 import com.fcdebug.earlysoccerserver.controller.response.ScheduleResponseDto
+import com.fcdebug.earlysoccerserver.controller.response.VoteResponseDto
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.service.TeamService
@@ -157,5 +159,35 @@ class TeamControllerTest @Autowired constructor (
             .andExpect(jsonPath("\$.place").value(place))
             .andExpect(jsonPath("\$.opponent").value(opponent))
             .andExpect(jsonPath("\$.note").value(note))
+    }
+
+    @Test
+    fun `스케줄에 투표하는 API`() {
+        val req = VoteRequestDto(1, "ATTENDED")
+        given(teamService.createTeamScheduleVote(1, req)).willReturn(
+            VoteResponseDto(1, 1, "ATTENDED"))
+        mvc.perform(post("/team/schedules/1/vote")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(req.toString()).with(csrf()))
+            .andExpect(status().isCreated)
+            .andExpect(jsonPath("\$.id").value(1))
+            .andExpect(jsonPath("\$.memberId").value(1))
+            .andExpect(jsonPath("\$.status").value("ATTENDED"))
+    }
+
+    @Test
+    fun `스케줄에 대한 투표를 수정하는 API`() {
+        val req = VoteRequestDto(1, "ATTENDED")
+        given(teamService.updateTeamScheduleVotes(1, req)).willReturn(
+            VoteResponseDto(1, 1, "ATTENDED"))
+        mvc.perform(put("/team/schedules/vote/1")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(req.toString()).with(csrf()))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("\$.id").value(1))
+            .andExpect(jsonPath("\$.memberId").value(1))
+            .andExpect(jsonPath("\$.status").value("ATTENDED"))
     }
 }
