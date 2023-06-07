@@ -2,7 +2,10 @@ package com.fcdebug.earlysoccerserver.controller
 
 import com.fcdebug.earlysoccerserver.controller.request.ScheduleRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.TeamRequestDto
+import com.fcdebug.earlysoccerserver.controller.request.VoteRequestDto
 import com.fcdebug.earlysoccerserver.controller.response.ScheduleResponseDto
+import com.fcdebug.earlysoccerserver.controller.response.VoteResponseDto
+import com.fcdebug.earlysoccerserver.domain.schedule.Vote
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.service.TeamService
 import org.springframework.http.HttpStatus
@@ -33,8 +36,9 @@ class TeamController(
         @PathVariable teamId: String,
         @RequestParam("year") year: String?,
         @RequestParam("month") month: String?,
-        @RequestParam("limit") limit: String?,): ResponseEntity<List<ScheduleResponseDto>> =
-        ResponseEntity(teamService.findTeamSchedules(teamId.toLong(), year, month, limit?.toInt()),
+        @RequestParam("start") start: String?,
+        @RequestParam("end") end: String?,): ResponseEntity<List<ScheduleResponseDto>> =
+        ResponseEntity(teamService.findTeamSchedules(teamId.toLong(), year, month, start, end),
             HttpStatus.OK)
 
     @PostMapping("/{teamId}/schedules")
@@ -47,11 +51,24 @@ class TeamController(
     fun updateTeamSchedule(
         @PathVariable scheduleId: String,
         @RequestBody req: ScheduleRequestDto): ResponseEntity<ScheduleResponseDto> =
-            ResponseEntity(teamService.updateTeamSchedules(scheduleId.toLong(), req), HttpStatus.OK)
+        ResponseEntity(teamService.updateTeamSchedules(scheduleId.toLong(), req), HttpStatus.OK)
 
     @DeleteMapping("/schedules/{scheduleId}")
     fun deleteTeamSchedule(@PathVariable scheduleId: String): ResponseEntity<HttpStatus> {
         teamService.deleteTeamSchedules(scheduleId.toLong())
         return ResponseEntity(HttpStatus.OK)
     }
+
+    @PostMapping("/schedules/{scheduleId}/vote")
+    fun voteTeamSchedule(
+        @PathVariable scheduleId: String,
+        @RequestBody req: VoteRequestDto): ResponseEntity<VoteResponseDto> {
+        return ResponseEntity(teamService.createTeamScheduleVote(scheduleId.toLong(), req), HttpStatus.CREATED)
+    }
+
+    @PutMapping("/schedules/vote/{voteId}")
+    fun updateVoteTeamSchedule(
+        @PathVariable voteId: String,
+        @RequestBody req: VoteRequestDto): ResponseEntity<VoteResponseDto> =
+        ResponseEntity(teamService.updateTeamScheduleVotes(voteId.toLong(), req), HttpStatus.OK)
 }

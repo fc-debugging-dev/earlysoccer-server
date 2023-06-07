@@ -15,15 +15,9 @@ class Member(
     val profileImg: String? = null,
     @OneToMany(mappedBy = "member") val memberTeams: MutableList<TeamMember> = mutableListOf<TeamMember>()
 ): AuditDateTimeEntity() {
-    fun addTeam(team: TeamMember) = memberTeams.add(team)
 
-    fun toDto() =
-        MemberDto(
-            id = this.id,
-            email = this.email,
-            name = this.name,
-            nickname = this.nickname,
-            profileImg = this.profileImg,
-            teams = memberTeams
-        )
+    companion object {
+        fun create(email: String, password: String, name: String, nickname: String,profileImg: String? = null): Member =
+            Member(email, password, name, nickname, profileImg)
+    }
 }

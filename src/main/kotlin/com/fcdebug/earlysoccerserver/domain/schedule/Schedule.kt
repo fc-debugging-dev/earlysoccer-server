@@ -7,15 +7,19 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import org.hibernate.annotations.DynamicUpdate
 import java.time.LocalDateTime
 
 @Entity
+@DynamicUpdate
 class Schedule(
     @ManyToOne(fetch = FetchType.LAZY) val team: Team,
     @Column(nullable = false) var date: LocalDateTime,
     @Column(nullable = false) var place: String,
     @Column(nullable = false) var opponent: String,
     var note: String,
+    @OneToMany(mappedBy = "schedule") val votes: MutableList<Vote> = mutableListOf()
 ): AuditDateTimeEntity() {
 
     fun updateSchedule(req: ScheduleRequestDto) {
@@ -27,12 +31,6 @@ class Schedule(
 
     companion object {
         fun create(team: Team, date: LocalDateTime, place: String, opponent: String, note: String): Schedule =
-            Schedule(
-                team = team,
-                date = date,
-                place = place,
-                opponent = opponent,
-                note = note,
-            )
+            Schedule(team, date, place, opponent, note)
     }
 }

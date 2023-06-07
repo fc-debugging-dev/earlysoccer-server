@@ -9,15 +9,21 @@ data class ScheduleResponseDto(
     val place: String,
     val opponent: String,
     val note: String,
+    val attended: MutableList<MemberResponseDto> = mutableListOf(),
+    val absent: MutableList<MemberResponseDto> = mutableListOf(),
 ) {
     companion object {
-        fun toDto(schedule: Schedule) =
+        fun toDto(schedule: Schedule,
+                  attended: MutableList<MemberResponseDto>,
+                  absent: MutableList<MemberResponseDto>) =
             ScheduleResponseDto(
                 id = schedule.id,
                 date = schedule.date,
                 place = schedule.place,
                 opponent = schedule.opponent,
                 note = schedule.note,
+                attended = attended,
+                absent = absent,
             )
     }
 }

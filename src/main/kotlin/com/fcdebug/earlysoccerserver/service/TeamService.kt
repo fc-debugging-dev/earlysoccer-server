@@ -2,26 +2,45 @@ package com.fcdebug.earlysoccerserver.service
 
 import com.fcdebug.earlysoccerserver.controller.request.ScheduleRequestDto
 import com.fcdebug.earlysoccerserver.controller.request.TeamRequestDto
+import com.fcdebug.earlysoccerserver.controller.request.VoteRequestDto
+import com.fcdebug.earlysoccerserver.controller.response.MemberResponseDto
 import com.fcdebug.earlysoccerserver.controller.response.ScheduleResponseDto
-import com.fcdebug.earlysoccerserver.domain.schedule.Schedule
-import com.fcdebug.earlysoccerserver.domain.schedule.ScheduleRepository
+import com.fcdebug.earlysoccerserver.controller.response.VoteResponseDto
+import com.fcdebug.earlysoccerserver.domain.member.Member
+import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
+import com.fcdebug.earlysoccerserver.domain.schedule.*
 import com.fcdebug.earlysoccerserver.domain.team.Team
 import com.fcdebug.earlysoccerserver.domain.team.TeamDto
 import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
+import jakarta.transaction.Transactional
 import mu.KotlinLogging
 import org.springframework.stereotype.Service
 
 @Service
 class TeamService (
     private val teamRepository: TeamRepository,
-    private val scheduleRepository: ScheduleRepository
+    private val scheduleRepository: ScheduleRepository,
+    private val voteRepository: VoteRepository,
+    private val memberRepository: MemberRepository,
 ) {
-    fun findTeamSchedules(teamId: Long, year: String?, month: String?, limit: Int?): List<ScheduleResponseDto> {
-        limit?.run {
-            return scheduleRepository.findByTeamIdByRecent(teamId, limit).map {
-                ScheduleResponseDto.toDto(it) }
+    val log = KotlinLogging.logger {  }
+    fun findTeamSchedules(teamId: Long, year: String?=null, month: String?=null,
+                          start: String?=null, end: String?=null): List<ScheduleResponseDto> {
+        var scheduleList = listOf<Schedule>()
+        if (year != null && month != null) {
+            scheduleRepository.findByTeamIdByYearMonth(teamId, year, month).also { scheduleList = it }
+        } else if (start != null && end != null) {
+            scheduleRepository.findByTeamIdByRange(teamId, start, end).also { scheduleList = it }
         }
-        return scheduleRepository.findByTeamIdByYearByMonth(teamId, year, month).map { ScheduleResponseDto.toDto(it) }
+        return scheduleList.map { schedule ->
+            val attended: MutableList<MemberResponseDto> = mutableListOf()
+            val absent: MutableList<MemberResponseDto> = mutableListOf()
+            schedule.votes.forEach { vote ->
+                if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
+                else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
+            }
+            ScheduleResponseDto.toDto(schedule, attended, absent)
+        }
     }
 
     fun createTeamSchedules(teamId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
@@ -34,16 +53,19 @@ class TeamService (
                 opponent = req.opponent,
                 note = req.note,
             )
-        ))
+        ), mutableListOf(), mutableListOf())
     }
 
+    @Transactional
     fun updateTeamSchedules(scheduleId: Long, req: ScheduleRequestDto): ScheduleResponseDto {
-        val schedule: Schedule = scheduleRepository.findById(scheduleId).orElse(null)
-        schedule.run {
-            this.updateSchedule(req)
-            scheduleRepository.save(this)
+        val attended: MutableList<MemberResponseDto> = mutableListOf()
+        val absent: MutableList<MemberResponseDto> = mutableListOf()
+        val schedule: Schedule = scheduleRepository.findById(scheduleId=scheduleId).also { it.updateSchedule(req) }
+        schedule.votes.forEach { vote ->
+            if (vote.status == Status.ATTENDED) attended.add(MemberResponseDto.toDto(vote.member))
+            else if (vote.status == Status.ABSENT) absent.add(MemberResponseDto.toDto(vote.member))
         }
-        return ScheduleResponseDto.toDto(schedule)
+        return ScheduleResponseDto.toDto(scheduleRepository.save(schedule), attended, absent)
     }
 
     fun deleteTeamSchedules(scheduleId: Long) = scheduleRepository.deleteById(scheduleId)
@@ -52,4 +74,18 @@ class TeamService (
         TeamDto.toDto(teamRepository.save(
             Team.create(name = req.name, teamImg = req.teamImg)
         ))
+
+    fun createTeamScheduleVote(scheduleId: Long, req: VoteRequestDto): VoteResponseDto {
+        val schedule: Schedule = scheduleRepository.getReferenceById(scheduleId)
+        val member: Member = memberRepository.getReferenceById(req.memberId)
+        return VoteResponseDto.toDto(voteRepository.save(
+            Vote.create(schedule, member, req.status)
+        ))
+    }
+
+    @Transactional
+    fun updateTeamScheduleVotes(voteId: Long, req: VoteRequestDto): VoteResponseDto {
+        val vote: Vote = voteRepository.getReferenceById(voteId).also { it.updateVote(req) }
+        return VoteResponseDto.toDto(voteRepository.save(vote))
+    }
 }
