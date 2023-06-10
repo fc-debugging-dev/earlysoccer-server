@@ -15,6 +15,7 @@ abstract class AuditDateTimeEntity: AuditIDEntity() {
     var createdAt: LocalDateTime = LocalDateTime.now()
 
     @LastModifiedDate
+    @Column()
     var updatedAt: LocalDateTime? = null
 }
 
@@ -23,5 +24,5 @@ abstract class AuditDateTimeEntity: AuditIDEntity() {
 abstract class AuditIDEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    var id: Long? = null
 }
