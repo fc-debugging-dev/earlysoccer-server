@@ -1,13 +1,21 @@
 package com.fcdebug.earlysoccerserver.service
 
+import com.fcdebug.earlysoccerserver.controller.exception.CustomException
+import com.fcdebug.earlysoccerserver.controller.exception.ErrorCode
 import com.fcdebug.earlysoccerserver.domain.member.MemberRepository
 import com.fcdebug.earlysoccerserver.domain.team.Notification
 import com.fcdebug.earlysoccerserver.domain.team.NotificationRepository
 import com.fcdebug.earlysoccerserver.domain.team.TeamRepository
-import com.fcdebug.earlysoccerserver.service.request.NotificationCreateServiceRequestDto
-import com.fcdebug.earlysoccerserver.service.response.NotificationCreateServiceResponseDto
+import com.fcdebug.earlysoccerserver.service.request.CreateNotificationServiceRequestDto
+import com.fcdebug.earlysoccerserver.service.request.UpdateNotificationServiceRequestDto
+import com.fcdebug.earlysoccerserver.service.response.CreateNotificationServiceResponseDto
+import com.fcdebug.earlysoccerserver.service.response.NotificationDetailServiceResponseDto
+import com.fcdebug.earlysoccerserver.service.response.NotificationListServiceResponseDto
+import com.fcdebug.earlysoccerserver.service.response.UpdateNotificationServiceResponseDto
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
+@Transactional(readOnly = true)
 @Service
 class NotificationService (
     private val notificationRepository: NotificationRepository,
@@ -15,34 +23,86 @@ class NotificationService (
     private val teamRepository: TeamRepository,
 ) {
     
-    fun createNotification(notificationCreateServiceRequestDto: NotificationCreateServiceRequestDto)
-    : NotificationCreateServiceResponseDto {
-        val member = memberRepository.findById(notificationCreateServiceRequestDto.memberId).orElse(null)
-            ?: throw IllegalArgumentException("등록되지 않은 유저입니다")
+    @Transactional
+    fun createNotification(createNotificationServiceRequestDto: CreateNotificationServiceRequestDto)
+    : CreateNotificationServiceResponseDto {
+        val member = memberRepository.findById(createNotificationServiceRequestDto.memberId)
+            .orElseThrow {
+                CustomException(ErrorCode.MEMBER_NOT_FOUND)
+            }
         
-        val team = teamRepository.findById(notificationCreateServiceRequestDto.teamId).orElse(null)
-            ?: throw IllegalArgumentException("등록되지 않은 팀입니다")
+        val team = teamRepository.findById(createNotificationServiceRequestDto.teamId).orElseThrow {
+            CustomException(ErrorCode.TEAM_NOT_FOUND)
+        }
     
         val notification = notificationRepository.save(Notification.create(
-            title = notificationCreateServiceRequestDto.title,
-            content = notificationCreateServiceRequestDto.content,
+            title = createNotificationServiceRequestDto.title,
+            content = createNotificationServiceRequestDto.content,
             writer = member,
             team = team,
         ))
         
-        return NotificationCreateServiceResponseDto(
+        return CreateNotificationServiceResponseDto(
             id = notification.id!!,
         )
     }
     
-    fun getAllNotificationsByTeamId(teamId: Long) {
-        val team = teamRepository.findById(teamId).orElse(null)
-            ?: throw IllegalArgumentException("등록되지 않은 팀입니다")
-
+    fun findTeamNotifications(teamId: Long): List<NotificationListServiceResponseDto> {
+        val notifications = notificationRepository.findAll()
+        
+        return notifications.map {
+            NotificationListServiceResponseDto(
+                id = it.id!!,
+                title = it.title,
+                writer = it.writer.name,
+                createdAt = it.createdAt,
+            )
+        }
+        
     }
     
-    fun getNotificationById() {
-    
+    fun findTeamNotificationById(notificationId: Long): NotificationDetailServiceResponseDto {
+        val notification = notificationRepository.findById(notificationId)
+            .orElseThrow {
+                CustomException(ErrorCode.NOTIFICATION_NOT_FOUND)
+            }
+        
+        return NotificationDetailServiceResponseDto(
+            id = notification.id!!,
+            title = notification.title,
+            content = notification.content,
+            writer = notification.writer.name,
+            createdAt = notification.createdAt,
+        )
     }
     
+    @Transactional
+    fun deleteNotificationById(notificationId: Long)  {
+    
+        val notification = notificationRepository.findById(notificationId)
+            .orElseThrow {
+                CustomException(ErrorCode.NOTIFICATION_NOT_FOUND)
+            }
+        
+        notificationRepository.delete(notification)
+    }
+    
+    @Transactional
+    fun updateNotificationById(updateNotificationServiceRequestDto: UpdateNotificationServiceRequestDto)
+    : UpdateNotificationServiceResponseDto {
+        val notification = notificationRepository.findById(updateNotificationServiceRequestDto.id).orElseThrow {
+            CustomException(ErrorCode.NOTIFICATION_NOT_FOUND)
+        }
+        
+        notification.update(
+            title = updateNotificationServiceRequestDto.title,
+            content = updateNotificationServiceRequestDto.content,
+        )
+    
+        val updatedNotification = notificationRepository.save(notification)
+        
+        return UpdateNotificationServiceResponseDto(
+            id = updatedNotification.id!!
+        )
+    }
 }

@@ -9,18 +9,23 @@ import jakarta.persistence.ManyToOne
 
 @Entity
 class Notification(
-
-    @Column(nullable = false) val title: String,
-
-    @Column(nullable = false) val content: String,
-
+    
+    @Column(nullable = false) var title: String,
+    
+    @Column(nullable = false) var content: String,
+    
     @ManyToOne(fetch = FetchType.LAZY)
     val writer: Member,
-
+    
     @ManyToOne(fetch = FetchType.LAZY)
     val team: Team,
-
-) : AuditDateTimeEntity() {
+    
+    ) : AuditDateTimeEntity() {
+    
+    fun update(title: String, content: String) {
+        this.title = title
+        this.content = content
+    }
     
     companion object {
         fun create(title: String, content: String, team: Team, writer: Member): Notification {
